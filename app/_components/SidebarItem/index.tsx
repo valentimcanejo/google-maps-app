@@ -18,19 +18,15 @@ export default function SidebarItem({
   onClick = () => {},
 }: MenuItemProps) {
   return (
-    <>
-      <Link href={{ pathname: url }} onClick={onClick} className="no-underline">
-        <li
-          className={`flex rounded-md p-2 mt-5 cursor-pointer hover:bg-light-white text-gray-300 text-lg items-center gap-x-4`}
-        >
-          <div>{icone}</div>
-          <span
-            className={`${open === false && "hidden"} origin-left duration-200`}
-          >
-            {texto}
-          </span>
-        </li>
-      </Link>
-    </>
+    <Link href={{ pathname: url }} onClick={onClick} className="no-underline">
+      <li
+        className={`flex rounded-md p-2 mt-5 cursor-pointer hover:bg-light-white dark:text-gray-300 text-white text-lg items-center gap-x-4`}
+      >
+        <div>{icone}</div>
+        <span className={`${!open && "hidden"} origin-left duration-200`}>
+          {texto}
+        </span>
+      </li>
+    </Link>
   );
 }

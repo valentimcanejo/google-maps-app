@@ -14,14 +14,6 @@ export default function Titulo(props: TituloProps) {
       >
         {props.titulo}
       </h1>
-      <h2
-        className={`
-                font-light text-sm
-                dark:text-gray-300
-            `}
-      >
-        {props.subtitulo}
-      </h2>
     </div>
   );
 }

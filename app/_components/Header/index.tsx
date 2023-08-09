@@ -7,16 +7,14 @@ import AvatarUsuario from "../AvatarUsuario";
 
 interface HeaderProps {
   titulo: string;
-  subtitulo?: string;
 }
 
 export default function Header(props: HeaderProps) {
   const { tema, alternarTema } = useAppData();
-  console.log(tema);
 
   return (
-    <div className={`flex`}>
-      <Titulo titulo={props.titulo} subtitulo={props.subtitulo} />
+    <div className={`flex mb-4`}>
+      <Titulo titulo={props.titulo} />
       <div className={`flex flex-grow justify-end items-center`}>
         <BotaoAlternarTema tema={tema} alternarTema={alternarTema} />
         <AvatarUsuario className="ml-3" />

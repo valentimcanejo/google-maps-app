@@ -102,7 +102,7 @@ const AuthProvider = (props: AuthProviderProps) => {
 
       await configurarSessao(ref);
 
-      router.push("/projetos");
+      router.push("/clientes");
       return "sucesso";
     } catch (error: any) {
       const erroTraduzido = catchError(error.code, error.message);
@@ -116,7 +116,7 @@ const AuthProvider = (props: AuthProviderProps) => {
     if (userLogged.user?.email) {
       await configurarSessao(userLogged);
 
-      router.push("/projetos");
+      router.push("/clientes");
     }
   };
 
@@ -127,7 +127,7 @@ const AuthProvider = (props: AuthProviderProps) => {
           setLogado(true);
         } else {
           setLogado(false);
-          if (pathname !== "/fichas" && pathname !== "/login") {
+          if (pathname !== "/cadastro" && pathname !== "/login") {
             router.push("/login");
           }
         }
