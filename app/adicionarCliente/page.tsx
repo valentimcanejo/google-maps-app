@@ -9,9 +9,9 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import { addDoc, collection } from "firebase/firestore";
-import { useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useMemo, useEffect } from "react";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -127,14 +127,33 @@ export function Places({ value, setValue }: any) {
 
 const AdicionarCliente = () => {
   const [email, setEmail] = useState("");
-  const router = useRouter();
-  const [map, setMap] = useState(null);
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-  const [duration, setDuration] = useState("");
-  const center = useMemo(() => ({ lat: 44, lng: -80 }), []);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const idCliente = searchParams.get("idCliente");
 
   const [distance, setDistance] = useState("");
+
+  const getClienteAtual = async () => {
+    try {
+      if (idCliente !== "") {
+        const clienteRef = doc(db, "clientes", idCliente!);
+        const clienteData = (await getDoc(clienteRef)).data();
+
+        setEmail(clienteData?.email);
+        setOrigin(clienteData?.map.origem);
+        setDestination(clienteData?.map.destino);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getClienteAtual();
+  }, [idCliente]);
 
   const getDistance = async () => {
     if (origin !== "" && destination !== "") {
@@ -155,7 +174,6 @@ const AdicionarCliente = () => {
 
       const response = await fetch(url);
       const json = await response.json();
-      console.log(json);
 
       if (json.status === "OK") {
         const data = json.rows[0].elements[0];
@@ -183,15 +201,34 @@ const AdicionarCliente = () => {
 
     if (email !== "") {
       try {
-        await addDoc(collection(db, "clientes"), {
-          email: email,
-          map: {
-            distancia,
-            tempo,
-            origem: origin,
-            destino: destination,
-          },
-        });
+        if (idCliente && idCliente !== "") {
+          const clienteRef = doc(db, "clientes", idCliente!);
+          await updateDoc(clienteRef, {
+            email: email,
+            map: {
+              distancia,
+              tempo,
+              origem: origin,
+              destino: destination,
+            },
+          });
+        } else {
+          console.log(email);
+          console.log(distancia);
+          console.log(tempo);
+
+          console.log(origin);
+          console.log(destination);
+          await addDoc(collection(db, "clientes"), {
+            email: email,
+            map: {
+              distancia,
+              tempo,
+              origem: origin,
+              destino: destination,
+            },
+          });
+        }
 
         router.push("/clientes");
       } catch (error) {

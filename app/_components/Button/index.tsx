@@ -37,7 +37,7 @@ const ButtonRoot = ({
           "px-8 py-3 gap-4 text-base font-bold": size === "lg",
           "px-8 py-7 gap-4 text-base font-bold": size === "xl",
           "bg-blue-500": variant === "primary",
-          "bg-error": variant === "error",
+          "bg-red-400": variant === "error",
           "bg-green-400": variant === "success",
           "bg-orange-500": variant === "alert",
           "bg-neutral-600": variant === "standard",

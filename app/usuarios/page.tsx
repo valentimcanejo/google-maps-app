@@ -1,13 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import ConvidarUsuario from "./_components/ModalConvidarUsuario";
 
 import Header from "../_components/Header";
+import { collection, onSnapshot } from "firebase/firestore";
+import db from "@/firebase/initFirebase";
 
 const Usuarios = () => {
   const [openModalConvidar, setOpenModalConvidar] = useState(false);
+  const [arrayUsuarios, setArrayUsuarios] = useState<any>([]);
+
+  const getUsers = async () => {
+    const collectionRef = collection(db, "projetos_usuarios");
+
+    onSnapshot(collectionRef, (snapshot) => {
+      setArrayUsuarios?.(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    });
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
     <div className="dark:text-white">
       <Header titulo="Usuários" />

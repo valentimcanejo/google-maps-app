@@ -90,10 +90,6 @@ const ConvidarUsuario = ({
 
         await addDoc(projetosUsuariosRef, {
           emailUsuario: email,
-          aceito: false,
-          idProjeto,
-          criadoEm: new Date(),
-          unidades: [],
         });
 
         toast.success("Convite enviado com sucesso.", {
